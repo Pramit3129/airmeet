@@ -64,5 +64,28 @@ bun run index.ts
 }
 ```
 
+### POST /call/scheduleCall
+
+**Example Request:**
+
+```json
+{
+    "name": "Pramit",
+    "phNo": "+918777562720",
+    "email": "abc@example.com",
+    "delay": 1
+}
+```
+*(email is optional)*
+
+**Example Success Response:**
+
+```json
+{
+    "message": "Call scheduled successfully for +918777562720 and job created job: {\"name\":\"scheduled-call\",\"data\":{\"metadata\":{\"leadId\":\"697b3ceca2040a7583b784e2\"},\"from_number\":\"+17787190711\",\"agentId\":\"agent_a858e4ad7d62bcc74758c9946c\",\"dynamicVariables\":{\"name\":\"Pramit\",\"email\":\"abc@example.com\",\"phone_number\":\"+918777562720\"}},\"opts\":{\"attempts\":0,\"delay\":60000,\"removeOnComplete\":true},\"id\":\"5\",\"progress\":0,\"returnvalue\":null,\"stacktrace\":null,\"delay\":60000,\"priority\":0,\"attemptsStarted\":0,\"attemptsMade\":0,\"stalledCounter\":0,\"timestamp\":1769688610710,\"queueQualifiedName\":\"bull:call-queue\"}",
+    "jobId": "5",
+    "delay_in_Ms": 60000
+}
+```
 
 This project was created using `bun init` in bun v1.3.5. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
