@@ -2,6 +2,7 @@ import { json, type Request, type Response } from "express";
 import { RetellService } from '@airmeet/service';
 import { Lead, Call } from '@airmeet/models'
 import { queue } from '@airmeet/queues'
+import { Types } from "mongoose";
 
 interface CallRequest {
     name: string;
@@ -14,6 +15,19 @@ interface ScheduleCallRequest {
     phNo: string;
     email: string;
     delay: number;
+}
+
+interface callDetails {
+    callDBId: string;
+    callId: string;
+    createdAt: Date;
+    status: String,
+    analysis: any
+    transcript: string
+    recordingUrl: string
+    durationMs: number
+    fromNumber: string
+    toNumber: string,
 }
 
 export class CallController {
@@ -88,6 +102,7 @@ export class CallController {
                 toNumber: phNo,
                 leadId: lead?._id,
             });
+            await newCall.save();
         } catch (e) {
             console.error(`failed to create call in database: ${e}`);
             return res.status(500).json({
@@ -106,7 +121,7 @@ export class CallController {
     static async scheduleCall(req: Request, res: Response) {
         const { name, phNo, email, delay }: ScheduleCallRequest = req.body;
 
-        const delayMs = delay * 60 * 1000; 
+        const delayMs = delay * 60 * 1000;
 
         if (!name || !delay || !phNo) {
             return res.status(400).json({
@@ -114,7 +129,7 @@ export class CallController {
             })
         }
 
-        if(delay < 1){
+        if (delay < 1) {
             return res.status(400).json({
                 message: "Delay should be greater than or equal to 1"
             })
@@ -157,7 +172,7 @@ export class CallController {
             })
         }
         // schedule the call on delay minutes in redis 
-        
+
         // Metadata for retell
         const metadata = {
             leadId: lead?._id
@@ -169,12 +184,40 @@ export class CallController {
             agentId,
             dynamicVariables
         }
-        const job = await queue.add('scheduled-call', jobData, {delay: delayMs, removeOnComplete: true});
+        const job = await queue.add('scheduled-call', jobData, { delay: delayMs, removeOnComplete: true });
         console.log(`Job created for ${phNo} and job created job: ${JSON.stringify(job)} with a delay of ${delayMs} mili secs`);
         return res.status(200).json({
             message: `Call scheduled successfully for ${phNo} and job created job: ${JSON.stringify(job)}`,
             jobId: job.id,
             delay_in_Ms: delayMs
+        })
+    }
+
+    static async getCalls(req: Request, res: Response) {
+        const leadId = req.params.leadId;
+        if (!leadId || typeof leadId !== 'string' || !Types.ObjectId.isValid(leadId)) {
+            return res.status(400).json({
+                message: "Invalid lead ID"
+            })
+        }
+        const calls = await Call.find({ leadId: leadId });
+        const callsOftheLead: callDetails[] = calls.map((call) => {
+            return {
+                callDBId: call._id as unknown as string,
+                callId: call.callId,
+                createdAt: call.createdAt,
+                status: call.status,
+                analysis: call.analysis || "",
+                transcript: call.transcript || "transcript not available",
+                recordingUrl: call.recordingUrl || "recording not available",
+                durationMs: call.durationMs || 200,
+                fromNumber: call.fromNumber,
+                toNumber: call.toNumber,
+            }
+        });
+        return res.status(200).json({
+            message: "Calls found",
+            callsOftheLead
         })
     }
 }

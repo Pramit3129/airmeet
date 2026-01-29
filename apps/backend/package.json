@@ -16,5 +16,9 @@
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.1.5"
   }
 }
