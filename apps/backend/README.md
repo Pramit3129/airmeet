@@ -77,6 +77,7 @@ bun run index.ts
 }
 ```
 *(email is optional)*
+*(delay is in minutes)*
 
 **Example Success Response:**
 
