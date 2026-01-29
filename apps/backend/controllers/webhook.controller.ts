@@ -36,8 +36,8 @@ export class WebhookController {
                         const jobData = {
                             metadata: call?.metadata,
                             from_number: call?.from_number,
-                            agentId: call?.agentId,
-                            dynamicVariables: call?.dynamicVariables
+                            agentId: call?.agent_id,
+                            dynamicVariables: call?.retell_llm_dynamic_variables
                         };
                         const job = await queue.add('scheduled-call', jobData, { delay: delayMs, removeOnComplete: true });
                         console.log("Job added successfully as it is asked for scheduling jobId", job.id);
