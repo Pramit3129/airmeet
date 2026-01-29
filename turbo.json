@@ -2,7 +2,11 @@
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
   "globalEnv": [
-    "MONGO_URI"
+    "MONGO_URI",
+    "RETELL_API_KEY",
+    "AGENT_ID",
+    "FROM_NUMBER",
+    "REDIS_URL"
   ],
   "tasks": {
     "build": {

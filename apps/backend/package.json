@@ -8,10 +8,17 @@
     "build": "bun run index.ts"
   },
   "devDependencies": {
+    "@airmeet/models": "workspace:*",
+    "@airmeet/service": "workspace:*",
+    "@airmeet/queues": "workspace:*",
     "@types/bun": "latest",
-    "@airmeet/models": "workspace:*"
+    "@types/express": "^5.0.6"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.1.5"
   }
 }
