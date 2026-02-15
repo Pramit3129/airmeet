@@ -10,7 +10,8 @@
     "NEXT_PUBLIC_API_URL",
     "JWT_SECRET",
     "RESEND_API_KEY",
-    "MAIL_FROM"
+    "MAIL_FROM",
+    "API_URL"
   ],
   "tasks": {
     "build": {
