@@ -14,7 +14,7 @@
     "dotenv": "^17.2.3",
     "dotenv-cli": "^11.0.0",
     "express": "^5.2.1",
-    "resend": "^6.9.1"
+    "resend": "^6.9.2"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.6",
