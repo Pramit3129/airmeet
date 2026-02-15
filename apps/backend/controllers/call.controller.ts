@@ -154,10 +154,10 @@ export class CallController {
     await publishMessage(
       process.env.PUBSUB_TOPIC_NAME || "airmeet-topic",
       JSON.stringify({
-        metadata: JSON.stringify(JSON.parse(jobData.metadata)),
+        metadata: JSON.stringify(jobData.metadata),
         from_number: jobData.from_number,
         agentId: jobData.agentId,
-        dynamicVariables: JSON.stringify(JSON.parse(jobData.dynamicVariables)),
+        dynamicVariables: JSON.stringify(jobData.dynamicVariables),
       }),
     );
 
