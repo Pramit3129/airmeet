@@ -1,0 +1,6 @@
+{
+    "name": "@airmeet/pubsub",
+    "private": true,
+    "main": "index.ts",
+    "type": "module"
+}
