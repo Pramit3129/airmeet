@@ -122,9 +122,11 @@ export default function LeadDetailsPage() {
           }
           setCalls(data.calls.data || []);
         } else {
-          toast.error("Failed to fetch call data");
+          console.error("Failed to fetch call data:", response.status, response.statusText);
+          toast.error(`Failed to fetch call data: ${response.status}`);
         }
       } catch (error) {
+        console.error("Error connecting to server:", error);
         toast.error("Error connecting to server");
       } finally {
         setIsLoading(false);

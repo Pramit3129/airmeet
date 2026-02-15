@@ -59,9 +59,11 @@ export default function Page() {
           console.log(data);
           setLeads(data.leads.data || []);
         } else {
-          toast.error("Failed to fetch leads");
+          console.error("Failed to fetch leads:", response.status, response.statusText);
+          toast.error(`Failed to fetch leads: ${response.status}`);
         }
       } catch (error) {
+        console.error("Error connecting to server:", error);
         toast.error("Error connecting to server");
       } finally {
         setIsLoading(false);

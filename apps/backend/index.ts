@@ -10,7 +10,6 @@ import authRoutes from "./routes/auth.route.ts";
 import userRoutes from "./routes/user.route.ts";
 
 const PORT = Number(process.env.PORT) || 5000
-connectDB(process.env.MONGO_URI!);
 const app = express();
 app.use(cors(
     {
@@ -28,25 +27,35 @@ app.use('/call', callRoutes);
 app.use('/lead', leadRoutes);
 app.use('/webhook', webhookRoutes);
 app.use('/user', userRoutes);
-const server = app.listen(PORT, () => {
-    console.log(`Server Running on port ${PORT}`);
-});
+const startServer = async () => {
+    try {
+        await connectDB(process.env.MONGO_URI!);
+        const server = app.listen(PORT, () => {
+            console.log(`Server Running on port ${PORT}`);
+        });
 
-const gracefulShutdown = async () => {
-    console.log("Received kill signal, shutting down gracefully");
-    server.close(async () => {
-        console.log("Closed out remaining connections");
-        await disconnectRedis();
-        console.log("Redis disconnected");
-        process.exit(0);
-    });
+        const gracefulShutdown = async () => {
+            console.log("Received kill signal, shutting down gracefully");
+            server.close(async () => {
+                console.log("Closed out remaining connections");
+                await disconnectRedis();
+                console.log("Redis disconnected");
+                process.exit(0);
+            });
 
-    // Force close server after 10 secs
-    setTimeout(() => {
-        console.error("Could not close connections in time, forcefully shutting down");
+            // Force close server after 10 secs
+            setTimeout(() => {
+                console.error("Could not close connections in time, forcefully shutting down");
+                process.exit(1);
+            }, 10000);
+        }
+
+        process.on("SIGTERM", gracefulShutdown);
+        process.on("SIGINT", gracefulShutdown);
+    } catch (error) {
+        console.error("Failed to start server:", error);
         process.exit(1);
-    }, 10000);
-}
+    }
+};
 
-process.on("SIGTERM", gracefulShutdown);
-process.on("SIGINT", gracefulShutdown);
+startServer();
