@@ -8,7 +8,9 @@
     "FROM_NUMBER",
     "REDIS_URL",
     "NEXT_PUBLIC_API_URL",
-    "JWT_SECRET"
+    "JWT_SECRET",
+    "RESEND_API_KEY",
+    "MAIL_FROM"
   ],
   "tasks": {
     "build": {
