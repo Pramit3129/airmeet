@@ -28,7 +28,7 @@ export async function scheduleTask(jobData: JobData, delayMs: number) {
   const task: protos.google.cloud.tasks.v2.ITask = {
     httpRequest: {
       httpMethod: "POST",
-      url: process.env.API_URL + "/publish",
+      url: process.env.API_URL + "/call/publish",
       headers: {
         "Content-Type": "application/json",
       },
