@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@airmeet/database": "*",
+    "@google-cloud/pubsub": "^5.2.3",
+    "@google-cloud/tasks": "^6.2.1",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "dotenv-cli": "^11.0.0",

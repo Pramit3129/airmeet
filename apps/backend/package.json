@@ -12,6 +12,7 @@
     "@airmeet/queues": "workspace:*",
     "@airmeet/cache": "workspace:*",
     "@airmeet/service": "workspace:*",
+    "@airmeet/pubsub": "workspace:*",
     "@types/bcryptjs": "^3.0.0",
     "@types/bun": "latest",
     "@types/express": "^5.0.6",
