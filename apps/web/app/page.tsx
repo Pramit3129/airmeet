@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { AppSidebar } from "@/components/app-sidebar"
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { AppSidebar } from "@/components/app-sidebar";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 import {
   Table,
   TableBody,
@@ -15,51 +15,61 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { toast } from "sonner"
-import { format } from "date-fns"
-import { ProtectedRoute } from "@/components/protected-route"
-import { useAuth } from "@/components/auth-context"
+} from "@/components/ui/table";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { toast } from "sonner";
+import { format } from "date-fns";
+import { ProtectedRoute } from "@/components/protected-route";
+import { useAuth } from "@/components/auth-context";
 
 interface Lead {
-  _id: string
-  name: string
-  phNo: string
-  email?: string
-  createdAt: string
+  _id: string;
+  name: string;
+  phNo: string;
+  email?: string;
+  createdAt: string;
 }
 
 export default function Page() {
-  const [leads, setLeads] = useState<Lead[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const router = useRouter()
-  const { user } = useAuth()
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchLeads = async () => {
-      const token = localStorage.getItem("airmeet_token")
+      const token = localStorage.getItem("airmeet_token");
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/lead/allLeads`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/lead/allLeads`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        })
+        );
         if (response.ok) {
-          const data = await response.json()
-          setLeads(data.leads || [])
+          const data = await response.json();
+          console.log(data);
+          setLeads(data.leads.data || []);
         } else {
-          toast.error("Failed to fetch leads")
+          toast.error("Failed to fetch leads");
         }
       } catch (error) {
-        toast.error("Error connecting to server")
+        toast.error("Error connecting to server");
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    fetchLeads()
-  }, [])
+    fetchLeads();
+  }, []);
 
   return (
     <ProtectedRoute>
@@ -87,9 +97,13 @@ export default function Page() {
               </CardHeader>
               <CardContent>
                 {isLoading ? (
-                  <div className="flex justify-center p-4">Loading leads...</div>
+                  <div className="flex justify-center p-4">
+                    Loading leads...
+                  </div>
                 ) : leads.length === 0 ? (
-                  <div className="text-center p-4 text-muted-foreground">No leads found.</div>
+                  <div className="text-center p-4 text-muted-foreground">
+                    No leads found.
+                  </div>
                 ) : (
                   <Table>
                     <TableHeader>
@@ -106,10 +120,14 @@ export default function Page() {
                           onClick={() => router.push(`/lead/${lead._id}`)}
                           className="cursor-pointer hover:bg-muted/50 transition-colors"
                         >
-                          <TableCell className="font-medium">{lead.name}</TableCell>
+                          <TableCell className="font-medium">
+                            {lead.name}
+                          </TableCell>
                           <TableCell>{lead.phNo}</TableCell>
                           <TableCell>
-                            {lead.createdAt ? format(new Date(lead.createdAt), "PPP p") : "N/A"}
+                            {lead.createdAt
+                              ? format(new Date(lead.createdAt), "PPP p")
+                              : "N/A"}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -122,5 +140,5 @@ export default function Page() {
         </SidebarInset>
       </SidebarProvider>
     </ProtectedRoute>
-  )
+  );
 }

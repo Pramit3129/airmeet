@@ -19,7 +19,7 @@ interface JobData {
 export async function scheduleTask(jobData: JobData, delayMs: number) {
   const project = "realtygenie";
   const location = process.env.LOCATION || "europe-west1";
-  const queue = process.env.QUEUE_NAME || "airmeet-queue";
+  const queue = process.env.QUEUE_NAME || "airmeet-queue-1";
 
   const parent = client.queuePath(project, location, queue);
   const payload = JSON.stringify(jobData);
