@@ -139,13 +139,13 @@ export class CallController {
 
   static async publishCall(req: Request, res: Response) {
     const { jobData } = req.body;
-
+    console.log("Publishing call with jobData:", jobData);
     await publishMessage(
       process.env.PUBSUB_TOPIC_NAME || "airmeet-topic",
       JSON.stringify({
-        metadata: {},
-        from_number: process.env.FROM_NUMBER,
-        agentId: process.env.AGENT_ID,
+        metadata: jobData.metadata,
+        from_number: jobData.from_number,
+        agentId: jobData.agentId,
         dynamicVariables: {
           phone_number: jobData.dynamicVariables.phone_number,
         },
