@@ -1,10 +1,9 @@
 import { protos } from "@google-cloud/tasks";
 import { client } from "./client";
-import type { Types } from "mongoose";
 
 interface JobData {
   metadata: {
-    leadId: Types.ObjectId;
+    leadId: string;
     userId: string;
     isBatchCallRecord: boolean;
   };

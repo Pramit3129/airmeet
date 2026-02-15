@@ -230,7 +230,7 @@ export class CallController {
 
     // Metadata for retell
     const metadata = {
-      leadId: lead?._id,
+      leadId: lead?._id.toString(),
       userId: user._id,
       isBatchCallRecord: false,
     };
