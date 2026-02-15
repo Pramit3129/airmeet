@@ -138,12 +138,23 @@ export class CallController {
   }
 
   static async publishCall(req: Request, res: Response) {
-    const { jobData } = req.body;
+    const {
+      metadata = {},
+      from_number,
+      agentId,
+      dynamicVariables = {},
+    } = req.body;
+    const jobData = {
+      metadata,
+      from_number,
+      agentId,
+      dynamicVariables,
+    };
     console.log("Publishing call with jobData:", jobData);
     await publishMessage(
       process.env.PUBSUB_TOPIC_NAME || "airmeet-topic",
       JSON.stringify({
-        metadata: JSON.stringify(JSON.parse(jobData.metadata)),
+        metadata: JSON.stringify(jobData.metadata),
         from_number: jobData.from_number,
         agentId: jobData.agentId,
         dynamicVariables: {
