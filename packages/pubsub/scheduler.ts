@@ -21,7 +21,12 @@ export async function scheduleTask(jobData: JobData, delayMs: number) {
   const queue = process.env.QUEUE_NAME || "airmeet-queue-1";
 
   const parent = client.queuePath(project, location, queue);
-  const payload = JSON.stringify(jobData);
+  const payload = JSON.stringify({
+    metadata: JSON.stringify(jobData.metadata),
+    from_number: jobData.from_number,
+    agentId: jobData.agentId,
+    dynamicVariables: JSON.stringify(jobData.dynamicVariables),
+  });
 
   const delaySeconds = Math.floor(delayMs / 1000);
 
