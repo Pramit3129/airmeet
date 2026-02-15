@@ -21,6 +21,7 @@ RUN bun install
 WORKDIR /app/apps/backend
 
 # Expose port for the backend
+ENV PORT=3001
 EXPOSE 3001
 
 CMD ["bun", "run", "index.ts"]
