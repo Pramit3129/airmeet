@@ -25,8 +25,10 @@ export class WebhookController {
     console.log("Webhook received");
     try {
       const { event, call } = req.body as RetellWebhookBody;
+      console.log("MADARFUCKER", JSON.stringify(call));
       const call_id = call?.call_id;
       const call_analysis = call?.call_analysis;
+      console.log("MF call analysis ", call_analysis);
       const metadata = call?.metadata;
       const isBatchCallRecord = metadata?.isBatchCallRecord;
 
@@ -143,7 +145,7 @@ export class WebhookController {
         callRecord.status = call?.call_status;
         callRecord.fromNumber = call?.from_number;
         callRecord.toNumber = call?.to_number;
-
+        console.log("YOYO call record", callRecord);
         try {
           await callRecord.save();
         } catch (error) {
